@@ -1,0 +1,13 @@
+﻿@using CompaniesWebApp.Models.ViewModels.EditorModels;
+@model DepartmentCreationModel
+@{
+    ViewData["Title"] = "Создание департамента";
+}
+
+@using (Html.BeginForm("Create", "DepartmentEditor", FormMethod.Post))
+{
+    @Html.LabelFor(m => m.Name, "Введите название департамента:")<br />
+    @Html.TextBoxFor(m => m.Name)<br />
+    @Html.DropDownListFor(m => m.CompanyId, ViewBag.Companies as SelectList)<br />
+    <input type="submit" value="Создать" />
+}

@@ -1,8 +1,81 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using CompaniesWebApp.Models.DatabaseModels
+@model IEnumerable<Company>;
+@{
+    ViewData["Title"] = "Главная";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <div align="right">
+        <a href="@Url.Action("ExportCompaniesXML", "Home")">Выгрузить XML</a>
+        @using (Html.BeginForm("ImportCompaniesXML", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <label for="companiesFileInput">Выберите XML-файл с инфомацией о компаниях:</label><br />
+            <input type="file" id="companiesFileInput" name="companiesFile" accept="application/xml" />
+            <input type="submit" value="Добавить" />
+        }
+    </div>   
+    <div>
+        <a href="@Url.Action("Create", "CompanyEditor")">ДОБАВИТЬ КОМПАНИЮ</a>
+    </div>
+</div>
+<div>
+    <table width="100%" align="center" cellpadding="2" border="1">
+        @{
+            var companyNumber = 1;        
+            foreach (var company in Model)
+            {
+                <tr>
+                    <td>@($"{companyNumber}. {company.Name}")</td>
+                    <td><a href="@Url.Action("Edit", "CompanyEditor", new { Id = company.Id})">ИЗМЕНИТЬ</a></td>
+                    <td><a href="@Url.Action("Create", "DepartmentEditor", new { CompanyId = company.Id})">ДОБАВИТЬ ДЕПАРТАМЕНТ</a></td>
+                    <td>
+                        @using (Html.BeginForm("DeleteCompany", "Home", FormMethod.Post))
+                        {
+                            <input type="hidden" name="id" value=@company.Id>
+                            <button type="submit">УДАЛИТЬ</button>
+                        }
+                    </td>
+                    @{ 
+                        var departmentNumber = 1; 
+                        foreach (var department in company.Departments)
+                        {
+                            <tr>
+                                <td>&emsp;@($"{departmentNumber}. {department.Name}")</td>
+                                <td><a href="@Url.Action("Edit", "DepartmentEditor", new { Id = department.Id})">ИЗМЕНИТЬ</a></td>
+                                <td><a href="@Url.Action("Create", "DivisionEditor", new { DepartmentId = department.Id})">ДОБАВИТЬ ОТДЕЛ</a></td>
+                                <td>
+                                        @using (Html.BeginForm("DeleteDepartment", "Home", FormMethod.Post))
+                                        {
+                                        <input type="hidden" name="id" value=@department.Id>
+                                        <button type="submit">УДАЛИТЬ</button>
+                                        }
+                                </td>
+                                @{
+                                    var divisionNumber = 1;                            
+                                    foreach (var division in department.Divisions)
+                                    {
+                                        <tr>
+                                            <td>&emsp;&emsp;@($"{divisionNumber}. {division.Name}")</td>
+                                            <td><a href="@Url.Action("Edit", "DivisionEditor", new { Id = division.Id})">ИЗМЕНИТЬ</a></td>
+                                            <td />
+                                            <td>
+                                                @using (Html.BeginForm("DeleteDivision", "Home", FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="id" value=@division.Id>
+                                                    <button type="submit">УДАЛИТЬ</button>
+                                                }
+                                            </td>
+                                        </tr>
+                                        divisionNumber++;
+                                    }
+                                }
+                            </tr>
+                            departmentNumber++;
+                        }
+                    }
+                </tr>
+                companyNumber++;
+            }
+        }
+    </table>
 </div>

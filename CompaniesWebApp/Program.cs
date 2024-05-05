@@ -1,3 +1,6 @@
+using CompaniesWebApp.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace CompaniesWebApp
 {
     public class Program
@@ -8,6 +11,14 @@ namespace CompaniesWebApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            var connectionString = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build()
+                .GetConnectionString("DefaultConnection");
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             var app = builder.Build();
 
@@ -28,7 +39,7 @@ namespace CompaniesWebApp
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}");
 
             app.Run();
         }

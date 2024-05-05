@@ -1,0 +1,12 @@
+﻿@using CompaniesWebApp.Models.ViewModels.EditorModels;
+@model CompanyCreationModel
+@{
+    ViewData["Title"] = "Создание компании";
+}
+
+@using (Html.BeginForm("Create", "CompanyEditor", FormMethod.Post))
+{
+    @Html.LabelFor(m => m.Name, "Введите название компании:")<br />
+    @Html.TextBoxFor(m => m.Name)<br />
+    <input type="submit" value="Создать" />
+}

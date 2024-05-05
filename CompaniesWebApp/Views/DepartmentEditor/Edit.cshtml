@@ -1,0 +1,14 @@
+﻿@using CompaniesWebApp.Models.DatabaseModels;
+@model Department
+@{
+    ViewData["Title"] = "Редактирование департамента";
+}
+
+@using (Html.BeginForm("Edit", "DepartmentEditor", FormMethod.Post))
+{
+    <input type="hidden" value="@Model.Id" name="Id" />
+    @Html.LabelFor(m => m.Name, "Введите название департамента:")<br />
+    @Html.TextBoxFor(m => m.Name)<br />
+    @Html.DropDownListFor(m => m.CompanyId, ViewBag.Companies as SelectList)<br />
+    <input type="submit" value="Сохранить" />
+}

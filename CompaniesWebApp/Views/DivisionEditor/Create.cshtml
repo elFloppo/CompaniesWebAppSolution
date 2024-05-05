@@ -1,0 +1,13 @@
+﻿@using CompaniesWebApp.Models.ViewModels.EditorModels;
+@model DivisionCreationModel
+@{
+    ViewData["Title"] = "Создание отдела";
+}
+
+@using (Html.BeginForm("Create", "DivisionEditor", FormMethod.Post))
+{
+    @Html.LabelFor(m => m.Name, "Введите название отдела:")<br />
+    @Html.TextBoxFor(m => m.Name)<br />
+    @Html.DropDownListFor(m => m.DepartmentId, ViewBag.Departments as SelectList)<br />
+    <input type="submit" value="Сохранить" />
+}

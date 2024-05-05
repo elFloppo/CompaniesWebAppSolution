@@ -1,0 +1,13 @@
+﻿@using CompaniesWebApp.Models.DatabaseModels;
+@model Company
+@{
+    ViewData["Title"] = "Редактирование компании";
+}
+
+@using (Html.BeginForm("Edit", "CompanyEditor", FormMethod.Post))
+{
+    <input type="hidden" value="@Model.Id" name="Id" />
+    @Html.LabelFor(m => m.Name, "Введите название компании:")<br />
+    @Html.TextBoxFor(m => m.Name)<br />
+    <input type="submit" value="Сохранить" />
+}
