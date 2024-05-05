@@ -31,7 +31,7 @@ namespace CompaniesWebApp.Models.DatabaseModels
             get => _name; 
             set
             {
-                if (string.IsNullOrEmpty(value))
+                if (string.IsNullOrWhiteSpace(value))
                     throw new ArgumentException();
 
                 _name = value;
